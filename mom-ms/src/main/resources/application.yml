@@ -1,0 +1,63 @@
+server:
+  port: 8080
+  tomcat:
+    uri-encoding: UTF-8
+    basedir: /opt/mom/logs/tomcat
+    max-threads: 50
+    min-spare-threads: 10
+    connectionTimeout: 20000
+    accesslog:
+      pattern: common
+      enabled: true
+      directory: /opt/mom/logs
+      prefix: mom_access_log
+      suffix: .log
+      request-attributes-enabled: true
+      rename-on-rotate: true
+logging:
+  level:
+    root: INFO
+    com.br: DEBUG
+    org.apache.shiro.cache.ehcache.EhCacheManager: WARN
+    org.apache.ibatis: INFO
+spring:
+  velocity:
+    cache: false
+    suffix: .vm
+    content-type: text/html
+    charset: UTF-8
+    expose-spring-macro-helpers: true
+    check-template-location: true
+    enabled: true
+    properties:
+      input: 
+        encoding: UTF-8
+      output:
+        encoding: UTF-8
+    resource-loader-path: classpath:/WEB-INF/velocity/
+  resources:
+    static-locations: classpath:/
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.23.157:3306/mom?useUnicode=true&characterEncoding=utf-8&useSSL=true
+    username: mom
+    password: asdf
+#    url: jdbc:mysql://192.168.23.157:3306/speed?useUnicode=true&characterEncoding=utf-8&useSSL=true
+#    username: speed
+#    password: RxmT3jp9@BR_20180503
+    dbcp: 
+      max-wait-millis: 10000
+      min-idle: 5
+      max-size: 50
+      initial-size: 5
+      validation-query: SELECT 1
+      connection-properties=characterEncoding: utf8
+  cache:
+    type: ehcache
+    ehcache:
+      config: classpath:ehcache.xml
+mybatis:
+  config-location: classpath:/mybatis-config.xml
+  mapper-locations: classpath*:/mappings/**/*.xml
+adminPath: /admin
+

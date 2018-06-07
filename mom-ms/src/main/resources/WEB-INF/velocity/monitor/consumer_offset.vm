@@ -1,0 +1,87 @@
+#set($tab_bar="list")
+#parse("shared/header.vm")
+#parse("shared/top_menu.vm")
+#parse("monitor/consumer_offset_tab_bar.vm")
+<div class="row-fluid">
+<form class="form form-horizontal" method="POST" action="/monitor/consumer_offset">
+<div class="row-fluid">
+  <form class="form-inline well well-small" method="POST" action="/monitor/consumer_offset">
+    <div class="control-group">
+      <div class="controls">
+       <span>
+       	   <div class="col-lg-2 col-md-2 col-sm-2" style="width:200px;margin-left: 10px;">
+			     <label class="control-label">开始时间:</label>
+			     <input size="16" type="text" readonly id="start_time" class="form_datetime form-control" name="start_time">
+		   </div>
+		   <div class="col-lg-2 col-md-2 col-sm-2" style="width:200px;margin-left: 10px;">
+			     <label class="control-label">结束时间:</label>
+			     <input size="16" type="text" readonly id="stop_time" class="form_datetime form-control" name="stop_time">
+		    </div>
+		    <br/>
+            <select name="consumer_id">
+                <option value="">
+                	请选择
+                </option>
+                #foreach($consumer in $consumers)
+                <option #if ($consumer.getId() == $!consumerId) selected="selected" #end value="$consumer.getId()">$idAndGroup.get($consumer.getId())</option>
+                #end
+            </select>
+            <button type="submit" class="btn btn-primary" name="action" value="select">查询</button>
+        </span>
+        <span>
+            <select name="consumer_group">
+                <option value="">
+                	请选择
+                </option>
+                #foreach($consumer in $consumers)
+                <option #if ($consumer.getId() == $!consumerGroup) selected="selected" #end value="$consumer.getId()">$idAndGroup.get($consumer.getId())</option>
+                #end
+            </select>
+            <button type="submit" class="btn btn-primary" name="action" value="add">补录</button>
+        </span>
+      </div>
+    </div>
+  </form>
+</div>
+
+<consumeroffsetset>
+<!-- <legend>图形展示</legend> -->
+<table id="consumer_table" class="table table-bordered">
+        <thead>
+          <tr>
+            <td>消费端</td>
+            <td>队列</td>
+            <td>持久化</td>
+            <td>offset</td>
+            <td>统计日期</td>
+            <td>入库时间</td>
+          </tr>
+        </thead>
+        <tbody>
+        #foreach($consumerOffset in $consumerOffsets)
+        <tr>
+            <td>$!idAndConsumer.get($!consumerOffset.consumerId).getName()</td>
+            <td>$!idAndQueue.get($!idAndConsumer.get($!consumerOffset.consumerId).getQueueId()).getName()</td>
+            <td>$!PersistentType.fromInt($!idAndConsumer.get($!consumerOffset.consumerId).getPersistentType()).getName()</td>
+            <td>$!consumerOffset.offset</td>
+            <td>$!DateUtil.formatForDate($!consumerOffset.createTime)</td>
+            <td>$!DateUtil.formatForDateTime($!consumerOffset.updateTime)</td>
+        </tr>
+        #end
+        </tbody>
+</table>
+</consumeroffsetset>
+</form>
+</div>
+<script type="text/javascript">
+	  $(document).ready(function () {
+	  $(".form_datetime").datetimepicker({
+        	format: 'yyyy-mm-dd hh:ii',
+        	language:  'zh-CN',
+            autoclose: 0,
+            todayBtn:  1,
+        });
+        initializeDateHi();
+	  });
+</script>
+#parse("shared/footer.vm")

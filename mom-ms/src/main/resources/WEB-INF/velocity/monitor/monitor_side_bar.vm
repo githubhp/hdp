@@ -1,0 +1,35 @@
+<style type="text/css">
+    body {
+      padding-top: 60px;
+      padding-bottom: 40px;
+    }
+    .sidebar-nav {
+      padding: 9px 0;
+    }
+
+    @media (max-width: 980px) {
+      /* Enable use of floated navbar text */
+      .navbar-text.pull-right {
+        float: none;
+        padding-left: 5px;
+        padding-right: 5px;
+      }
+    }
+</style>
+<div class="container">
+    <div class="row-fluid">
+        <div class="span3">
+          <div class="well sidebar-nav">
+            <ul class="nav nav-list">
+              <li class="nav-header">可选操作</li>
+              <li #if($side_bar=="producer_status") class="active" #end><a href="/monitor/producer_status">消息生产者</a></li>
+              <li #if($side_bar=="consumer_status") class="active" #end><a href="/monitor/consumer_status">消息消费者</a></li>
+              <li #if($side_bar=="consumer_threshold") class="active" #end><a href="/monitor/consumer_threshold">消费端监控</a></li>
+              <li #if($side_bar=="consumer_groups") class="active" #end><a href="/monitor/consumer_groups">消费组监控</a></li>
+              <li #if($side_bar=="consumer_offset") class="active" #end><a href="/monitor/consumer_offset">消息数显示</a></li>
+              <li #if($side_bar=="consumer_offset_min") class="active" #end><a href="/monitor/consumer_offset_min">每日消息数</a></li>
+              <li #if($side_bar=="console") class="active" #end><a href="/monitor/console">消息日志</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="span9">

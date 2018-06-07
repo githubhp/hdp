@@ -1,0 +1,46 @@
+#set($top_menu="configure")
+#set($side_bar="consumer_process_create")
+#set($tab_bar="create")
+#parse("shared/header.vm")
+#parse("shared/top_menu.vm")
+#parse("configure/consumer_process_tab_bar.vm")
+
+##该功能已舍弃
+<div class="row-fluid">
+  <form class="form-horizontal" action="/configure/consumer_process_boot">
+    <fieldset>
+      <div id="legend" class="">
+        <legend class="">创建消费者</legend>
+      </div>
+    <div class="control-group">
+          <label class="control-label">消费者名字</label>
+          <div class="controls">
+            <select name="name" class="input-xlarge">
+                <option>选择消费者</option>
+                #foreach($!name in $!names)
+                <option value="$!name">$!name</option>
+                #end
+            </select>
+          </div>
+        </div>
+    <div class="control-group">
+          <label class="control-label">消费者代理</label>
+          <div class="controls">
+                <select name="consumer_broker_id" class="input-xlarge">
+                    <option>选择部署机器</option>
+                    #foreach($consumerBroker in $consumerBrokers)
+                    <option value="$consumerBroker.id">$consumerBroker.ip:$consumerBroker.port</option>
+                    #end
+                </select>
+          </div>
+        </div>
+    <div class="control-group">
+          <label class="control-label"></label>
+          <div class="controls">
+            <button class="btn btn-success">创建</button>
+          </div>
+        </div>
+    </fieldset>
+  </form>
+</div>
+#parse("shared/footer.vm")

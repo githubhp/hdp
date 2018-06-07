@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.br.mom.ms.dao.ProducerMapper">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+	<resultMap id="BaseResultMap" type="com.br.mom.ms.model.Producer">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="queue_id" property="queueId" jdbcType="INTEGER" />
+		<result column="mom_type" property="momType" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, name, queue_id, mom_type, create_time
+	</sql>
+
+	<insert id="insert" parameterType="com.br.mom.ms.model.Producer"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into producer (id, name,	queue_id, mom_type, create_time)
+		values 
+		(
+		 #{id,jdbcType=INTEGER},
+		 #{name,jdbcType=VARCHAR},
+		 #{queueId,jdbcType=INTEGER},
+		 #{momType,jdbcType=INTEGER},
+		 #{createTime,jdbcType=TIMESTAMP}
+		)
+	</insert>
+
+	<insert id="insertSelective" parameterType="com.br.mom.ms.model.Producer"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into producer
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="queueId != null">
+				queue_id,
+			</if>
+			<if test="momType != null">
+				mom_type,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="queueId != null">
+				#{queueId,jdbcType=INTEGER},
+			</if>
+			<if test="momType != null">
+				#{momType,jdbcType=INTEGER},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		producer
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+
+	<update id="logicalDelete" parameterType="com.br.mom.ms.model.Producer">
+		update producer
+		set name = #{name,jdbcType=VARCHAR},
+		queue_id = #{queueId,jdbcType=INTEGER},
+		mom_type = #{momType,jdbcType=INTEGER},
+		create_time = #{createTime,jdbcType=TIMESTAMP},
+		flag = #{flag,jdbcType=INTEGER}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	
+	<update id="updateByPrimaryKey" parameterType="com.br.mom.ms.model.Producer">
+		update producer
+		set name = #{name,jdbcType=VARCHAR},
+		queue_id = #{queueId,jdbcType=INTEGER},
+		mom_type = #{momType,jdbcType=INTEGER},
+		create_time = #{createTime,jdbcType=TIMESTAMP}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	
+	<update id="updateByPrimaryKeySelective" parameterType="com.br.mom.ms.model.Producer">
+		update producer
+		<set>
+			<if test="name != null">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="queueId != null">
+				queue_id = #{queueId,jdbcType=INTEGER},
+			</if>
+			<if test="momType != null">
+				mom_type = #{momType,jdbcType=INTEGER},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<select id="selectSelective" resultMap="BaseResultMap"
+		parameterType="com.br.mom.ms.model.Producer">
+		select
+		<include refid="Base_Column_List" />
+		from producer
+		where 1=1
+		<if test="id != null">
+			and id = #{id,jdbcType=INTEGER}
+		</if>
+		<if test="name != null">
+			and name = #{name,jdbcType=VARCHAR}
+		</if>
+		<if test="queueId != null">
+			and queue_id = #{queueId,jdbcType=INTEGER}
+		</if>
+		<if test="momType != null">
+			and mom_type = #{momType,jdbcType=INTEGER}
+		</if>
+		<if test="createTime != null">
+			and create_time = #{createTime,jdbcType=TIMESTAMP}
+		</if>
+		and flag = 0
+	</select>
+
+	<select id="selectAllSelective" resultMap="BaseResultMap"
+		parameterType="com.br.mom.ms.model.Producer">
+		select
+		<include refid="Base_Column_List" />
+		from producer
+		where 1=1
+		<if test="id != null">
+			and id = #{id,jdbcType=INTEGER}
+		</if>
+		<if test="name != null">
+			and name = #{name,jdbcType=VARCHAR}
+		</if>
+		<if test="queueId != null">
+			and queue_id = #{queueId,jdbcType=INTEGER}
+		</if>
+		<if test="momType != null">
+			and mom_type = #{momType,jdbcType=INTEGER}
+		</if>
+		<if test="createTime != null">
+			and create_time = #{createTime,jdbcType=TIMESTAMP}
+		</if>
+		and flag = 0
+	</select>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from producer
+		where id = #{id,jdbcType=INTEGER}
+		and flag = 0
+	</select>
+
+	<select id="selectByPage" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from
+		producer
+		where flag = 0
+		order by id
+		limit #{startIndex},#{pageSize}
+	</select>
+
+	<select id="selectTotalRecords" resultType="java.lang.Integer">
+		select
+		count(*)
+		from
+		producer
+	</select>
+</mapper>

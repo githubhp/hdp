@@ -1,0 +1,150 @@
+#set($tab_bar="list")
+#parse("shared/header.vm")
+#parse("shared/top_menu.vm")
+#parse("configure/consumer_tab_bar.vm")
+#parse("pageCount.vm")
+<div class="row-fluid">
+    <form class="form form-horizontal" method="POST" action="/configure/consumer">
+        <consumerset>
+            <legend>消费者列表</legend>
+            <table id="consumer_table" class="table table-bordered">
+                <thead>
+                    <tr>
+                        <td></td>
+                        <td>ID</td>
+                        <td>名字</td>
+                        <td>队列</td>
+                        <td>中间件</td>
+                        <td>持久化</td>
+                        <td>参数</td>
+                        <td>创建时间</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    #foreach($consumer in $page.getList())
+			        <tr>
+			            <td><input  name="selected_ids[]" value="$!consumer.id" type="checkbox" /><input name="ids[]" value="$!consumer.id" type="hidden" /></td>
+			            <td>$!consumer.id</td>
+			            <td><input class="input-large"  name="$!consumer.id:name" value="$!consumer.name" type="text" /></td>
+			            <td>
+			                <select class="input-small" name="$!consumer.id:queueId">
+			                    #foreach($queue in $queues)
+			                    <option #if ($queue.getId() == $!consumer.queueId) selected="selected" #end value="$queue.getId()">$queue.getName()</option>
+			                    #end
+			                </select>
+			            </td>
+			            <td>
+			                <select class="input-small" name="$!consumer.id:momType">
+			                    #foreach($momType in $momTypes)
+			                    <option #if ($momType.getV() == $!consumer.momType) selected="selected" #end value="$momType.getV()">$momType.getName()</option>
+			                    #end
+			                </select>
+			            </td>
+			            <td>
+			                <select class="input-small"  name="$!consumer.id:persistentType">
+			                    #foreach($persistentType in $persistentTypes)
+			                    <option #if ($persistentType.getV() == $!consumer.persistentType) selected="selected" #end value="$persistentType.getV()">$persistentType.getName()</option>
+			                    #end
+			                </select>
+			            </td>
+			            <td>
+			                <a onclick="show ($!consumer.id)">编辑</a>
+			            </td>
+			            <td>$DateUtil.formatForDate($!consumer.createTime)</td>
+			            <td>
+				            <button class="btn btn-primary" name="action" value="singlesave">保存</button>
+			            </td>
+			            <td>
+				            <button class="btn btn-danger" name="action" value="singledelete">删除</button>
+			        	</td>
+			        </tr>
+			        #end
+		            <tr>
+		                <td colspan="8">
+		                    <button id="btn-new-consumer" class="btn btn-success"><i class="icon-plus"></i> 添加页面</button>
+		                </td>
+		            </tr> 
+                </tbody>
+            </table>
+        <p>
+            <button id="btn-save-consumer" class="btn btn-primary" name="action" value="save"><i class="icon-ok"></i> 保存选中的字段</button>&nbsp;
+            <button id="btn-delete-selected-consumer" class="btn btn-danger" name="action" value="delete"><i class="icon-remove"></i> 删除选中的字段</button>
+        </p>
+	    <p>
+			#page($page)
+		</p>
+        </consumerset>
+  </form>
+  <div class="row">
+        <div id="console" class="modal hide fade in" style="display: block;">
+            <div class="modal-header">
+                <button id="close_console" type="button" class="close">×</button>
+                <h3 id="header_console"></h3>
+            </div>
+            <div class="modal-body">
+                <div class="row-fluid">
+                    <input id="consumerId" type="hidden" value=""></input>
+                </div>
+                <div class="row-fluid">
+                    <textarea id="content_console"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="save_console" class="btn btn-primary">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script language="javascript">
+    $(document).ready(function() {
+        $('#btn-new-consumer').click(function(e){
+            e.preventDefault();
+            $('#consumer_table tr:last').before('<tr><td></td><td></td><td><input name="new:name[]" type="text" /></td><td><select class="input-small" name="new:queueId[]">#foreach($queue in $queues)<option value="$queue.getId()">$queue.getName()</option>#end</select></td></td><td><select class="input-small" name="new:momType[]">#foreach($momType in $momTypes)<option value="$momType.getV()">$momType.getName()</option>#end</select></td><td><select class="input-small" name="new:persistentType[]">#foreach($persistentType in $persistentTypes)<option value="$persistentType.getV()">$persistentType.getName()</option>#end</select></td><td></td><td></td></tr>');
+        });
+    });
+    $(document).ready(function(){
+        $("#console").hide();
+        $("#close_console").click(function(){
+            $("#console").hide();
+        });
+        $("#save_console").click(function(){
+                var consumerId = $("#consumerId").val();
+                var content = $("#content_console").val();
+                var postData = new Object();
+                postData.params = content;
+                postData.consumerId = consumerId;
+                $.ajax({
+                    type: 'post',
+                    url: '/configure/consumer/params',
+                    data: postData,
+                    dataType: "text",
+                    success: function (data) {
+                        $("#content_console").val(data);
+                    },
+                    error: function (arg) {
+                        var e = arg;
+                    }
+                });
+        });
+    });
+    function show (consumerId) {
+        $(document).ready(function(){
+            $("#console").show();
+            $("#content_console").val("");
+            $("#consumerId").val(consumerId);
+            $.ajax({
+                url: '/configure/consumer/params?consumerId=' + consumerId,
+                dataType: "text",
+                success: function (data) {
+                    $("#content_console").val(data);
+                },
+                error: function (arg) {
+                    var e = arg;
+                }
+            });
+        });
+    }
+</script>
+#parse("shared/footer.vm")

@@ -1,0 +1,59 @@
+#set($top_menu="system")
+#set($side_bar="activemq")
+#set($tab_bar="list")
+#parse("shared/header.vm")
+#parse("shared/top_menu.vm")
+#parse("system/system_side_bar.vm")
+#parse("system/activemq_tab_bar.vm")
+<div class="row-fluid">
+  <form class="form form-horizontal" method="POST" action="/system/activemq">
+    <activemqset>
+      <legend>activemq集群</legend>
+      <table id="activemq_table" class="table table-bordered">
+        <thead>
+          <tr>
+            <td></td>
+            <td>ID</td>
+            <td>服务器列表</td>
+            <td>用户名</td>
+            <td>密码</td>
+            <td>创建时间</td>
+          </tr>
+        </thead>
+        <tbody>
+        #foreach($activemq in $activemqs)
+        <tr>
+            <td><input  name="selected_ids[]" value="$!activemq.id" type="checkbox" /><input name="ids[]" value="$!activemq.id" type="hidden" /></td>
+            <td>$!activemq.id</td>
+            <td><input name="$!activemq.id:serverList" value="$!activemq.serverList" type="text" /></td>
+            <td><input class="input-mini" name="$!activemq.id:username" value="$!activemq.username" type="text" /></td>
+            <td><input class="input-mini" name="$!activemq.id:password" value="$!activemq.password" type="text" /></td>
+           
+            <td>$DateUtil.formatForDate($!activemq.createTime)</td>
+           
+             <!--<td>$!activemq.createTime</td> -->
+        </tr>
+        #end
+          <tr>
+            <td colspan="6">
+              <button id="btn-new-activemq" class="btn btn-success"><i class="icon-plus"></i> 添加页面</button>
+            </td>
+          </tr> 
+        </tbody>
+      </table>
+      <p>
+        <button id="btn-save-activemq" class="btn btn-primary" name="action" value="save"><i class="icon-ok"></i> 保存字段列表</button>&nbsp;
+        <button id="btn-delete-selected-activemq" class="btn btn-danger" name="action" value="delete"><i class="icon-remove"></i> 删除选中的字段</button>
+      </p>
+    </activemqset>
+  </form>
+</div>
+<script language="javascript">
+    $(document).ready(function() {
+        $('#btn-new-activemq').click(function(e){
+            e.preventDefault();
+            $('#activemq_table tr:last').before('<tr><td></td><td></td><td><input name="new:serverList[]" type="text" /></td><td><input class="input-mini" name="new:username[]" type="text" /></td><td><input class="input-mini" name="new:password[]" type="text" /></td><td></td></tr>');
+        });
+    });
+</script>
+#parse("shared/footer.vm")

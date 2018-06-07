@@ -1,0 +1,331 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.br.mom</groupId>
+  <artifactId>mom-web</artifactId>
+  <version>0.0.1</version>
+  <packaging>jar</packaging>
+    
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.4.1.RELEASE</version>
+    </parent>
+   
+    <properties>
+        <shiro.version>1.4.0-RC2</shiro.version>
+        <poi.version>3.9</poi.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
+    
+    <!-- 设定主仓库，按设定顺序进行查找。 -->
+    <repositories>
+        <repository>
+            <id>100credit</id>
+  			<url>http://192.168.162.106:8081/nexus/content/groups/public/</url>
+        </repository>
+    </repositories>
+
+    <distributionManagement>
+		<repository>
+			<id>100credit_release</id>
+			<name>100credit Release Repository</name>
+			<url>http://192.168.162.106:8081/nexus/content/repositories/releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>100credit_snapshots</id>
+			<name>100credit Snapshot Repository</name>
+			<url>http://192.168.162.106:8081/nexus/content/repositories/snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
+	
+	
+    <dependencies>
+    
+		<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-jasper</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-cache</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>1.3.0</version>
+        </dependency>
+    	<dependency>  
+            <groupId>org.springframework.boot</groupId>  
+            <artifactId>spring-boot-devtools</artifactId>  
+            <optional>true</optional>  
+	    </dependency>
+        
+        <!-- SPRING begin -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.ehcache</groupId>
+            <artifactId>ehcache-core</artifactId>
+            <version>2.6.11</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.ehcache</groupId>
+            <artifactId>ehcache-web</artifactId>
+            <version>2.0.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-core</artifactId>
+            <version>${shiro.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-spring</artifactId>
+            <version>${shiro.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-cas</artifactId>
+            <version>${shiro.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-web</artifactId>
+            <version>${shiro.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-ehcache</artifactId>
+            <version>${shiro.version}</version>
+        </dependency>
+        <!-- GENERAL UTILS begin -->
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.5</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.4</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.3.2</version>
+        </dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-compress</artifactId>
+			<version>1.7</version>
+		</dependency>
+		
+		<dependency>  
+		    <artifactId>slf4j-api</artifactId>  
+		    <groupId>org.slf4j</groupId>  
+		</dependency>  
+		 
+		<dependency>  
+		    <groupId>ch.qos.logback</groupId>  
+		    <artifactId>logback-classic</artifactId>  
+		    <exclusions>  
+		        <exclusion>  
+		           <artifactId>slf4j-api</artifactId>  
+		           <groupId>org.slf4j</groupId>  
+		       </exclusion>  
+		    </exclusions>  
+		    <scope>provided</scope>  
+		</dependency>  
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-velocity</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.br.ice.service</groupId>
+			<artifactId>alarm-rely-new</artifactId>
+			<version>1.0.3-SNAPSHOT</version>
+		</dependency>
+
+		<!-- disconf 配置中心客户端推送 -->
+		<dependency>
+			<groupId>com.br.disconf</groupId>
+			<artifactId>disconf_web_api</artifactId>
+			<version>0.0.12</version>
+		</dependency>
+		<dependency>
+			<groupId>com.br.mom</groupId>
+			<artifactId>common</artifactId>
+			<version>0.1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.el</groupId>
+			<artifactId>javax.el-api</artifactId>
+			<version>2.2.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.web</groupId>
+			<artifactId>javax.el</artifactId>
+			<version>2.2.4</version>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.json-lib</groupId>
+			<artifactId>json-lib</artifactId>
+			<version>2.2.1</version>
+			<type>jar</type>
+			<classifier>jdk15</classifier>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.activemq</groupId>
+			<artifactId>activemq-client</artifactId>
+			<version>5.10.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-dbcp</groupId>
+			<artifactId>commons-dbcp</artifactId>
+		</dependency>
+		<!-- mybatis -->
+		<!-- <dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
+			<version>3.2.8</version>
+		</dependency> -->
+		<!-- <dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis-spring</artifactId>
+			<version>1.2.2</version>
+		</dependency> -->
+		<!-- <dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+		</dependency> -->
+
+		<!-- <dependency> <groupId>org.apache.curator</groupId> <artifactId>curator-client</artifactId> 
+			<version>2.12.0</version> </dependency> -->
+		<dependency>
+			<groupId>org.apache.curator</groupId>
+			<artifactId>curator-framework</artifactId>
+			<version>2.12.0</version>
+		</dependency>
+		<!-- kafka -->
+		<dependency>
+			<groupId>org.apache.kafka</groupId>
+			<artifactId>kafka_2.11</artifactId>
+			<version>0.8.2.2</version>
+			<exclusions>
+				<exclusion>
+					<groupId>log4j</groupId>
+					<artifactId>log4j</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		
+		<dependency>
+            <groupId>com.br.common</groupId>
+            <artifactId>commonsys-module</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+        
+        
+        <dependency>
+			<groupId>com.br.common</groupId>
+			<artifactId>br-common</artifactId>
+			<version>0.1.53-SNAPSHOT</version>
+			<exclusions>
+				<!-- <exclusion> <artifactId>json-lib</artifactId> <groupId>net.sf.json-lib</groupId> 
+					</exclusion> -->
+				<exclusion>
+					<artifactId>commons-codec</artifactId>
+					<groupId>org.apache.commons</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>slf4j-log4j12</artifactId>
+					<groupId>org.slf4j</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-web</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.bfd.finance</groupId>
+					<artifactId>neo-client</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		
+    </dependencies>
+    
+    <build>
+        <plugins>
+        	<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>com.br.mom.ms.MomManagerApplication</mainClass>  
+                    <excludeArtifactIds>
+                        slf4j-log4j12
+                    </excludeArtifactIds>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

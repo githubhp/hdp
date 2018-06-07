@@ -1,0 +1,33 @@
+<style type="text/css">
+    body {
+      padding-top: 60px;
+      padding-bottom: 40px;
+    }
+    .sidebar-nav {
+      padding: 9px 0;
+    }
+
+    @media (max-width: 980px) {
+      /* Enable use of floated navbar text */
+      .navbar-text.pull-right {
+        float: none;
+        padding-left: 5px;
+        padding-right: 5px;
+      }
+    }
+</style>
+<div class="container">
+    <div class="row-fluid">
+        <div class="span3">
+          <div class="well sidebar-nav">
+            <ul class="nav nav-list">
+              <li class="nav-header">可选操作</li>
+              <li #if($side_bar=="activemq") class="active" #end><a href="/system/activemq">Activemq集群</a></li>
+              <li #if($side_bar=="kafka") class="active" #end><a href="/system/kafka">Kafka集群</a></li>
+              <li #if($side_bar=="redis") class="active" #end><a href="/system/redis">Redis集群</a></li>
+              <li #if($side_bar=="consumer_broker") class="active" #end><a href="/system/consumer_broker">Consumer Broker集群</a></li>
+              <li #if($side_bar=="zookpeer") class="active" #end><a href="/system/zookpeer">zookpeer集群</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="span9">

@@ -1,0 +1,53 @@
+#set($tab_bar="list")
+#parse("shared/header.vm")
+#parse("shared/top_menu.vm")
+#parse("system/zookpeer_tab_bar.vm")
+<div class="row-fluid">
+  <form class="form form-horizontal" method="POST" action="/system/zookpeer">
+    <zookpeerset>
+      <legend>zookpeer集群</legend>
+      <table id="zookpeer_table" class="table table-bordered">
+        <thead>
+          <tr>
+            <td></td>
+            <td>ID</td>
+            <td>IP</td>
+            <td>端口</td>
+            <td>集群</td>
+            <td>创建时间</td>
+          </tr>
+        </thead>
+        <tbody>
+        #foreach($zookpeer in $zookpeers)
+        <tr>
+            <td><input  name="selected_ids[]" value="$!zookpeer.id" type="checkbox" /><input name="ids[]" value="$!zookpeer.id" type="hidden" /></td>
+            <td>$!zookpeer.id</td>
+            <td><input name="$!zookpeer.id:ip" value="$!zookpeer.ip" type="text" /></td>
+            <td><input name="$!zookpeer.id:port" value="$!zookpeer.port" type="text" /></td>
+            <td><input name="$!zookpeer.id:jq" value="$!zookpeer.jq" type="text" /></td>
+            <td>$DateUtil.formatForDate($!zookpeer.createTime)</td>
+        </tr>
+        #end
+          <tr>
+            <td colspan="6">
+              <button id="btn-new-zookpeer" class="btn btn-success"><i class="icon-plus"></i> 添加页面</button>
+            </td>
+          </tr> 
+        </tbody>
+      </table>
+      <p>
+        <button id="btn-save-zookpeer" class="btn btn-primary" name="action" value="save"><i class="icon-ok"></i> 保存字段列表</button>&nbsp;
+        <button id="btn-delete-selected-zookpeer" class="btn btn-danger" name="action" value="delete"><i class="icon-remove"></i> 删除选中的字段</button>
+      </p>
+    </zookpeerset>
+  </form>
+</div>
+<script language="javascript">
+    $(document).ready(function() {
+        $('#btn-new-zookpeer').click(function(e){
+            e.preventDefault();
+            $('#zookpeer_table tr:last').before('<tr><td></td><td></td><td><input name="new:ip[]" type="text" /></td><td><input name="new:port[]" type="text" /></td><td><input name="new:jq[]" type="text" /></td><td></td></tr>');
+        });
+    });
+</script>
+#parse("shared/footer.vm")

@@ -1,0 +1,40 @@
+#set($tab_bar="list")
+#parse("shared/header.vm")
+#parse("shared/top_menu.vm")
+#parse("monitor/consumer_groups_tab_bar.vm")
+#parse("pageCount.vm")
+<div class="row-fluid">
+	<form class="form form-horizontal" method="POST" action="/monitor/consumer_groups">
+		<consumergroupsset>
+			<p>
+				<button class="btn btn-primary" name="action" value="flush"><a style="color:white" href="/monitor/consumer_groups/flush">刷新</a></button>
+			</p>
+			<p>
+				<table id="consumer_table" class="table table-bordered">
+			    	<thead>
+			    		<tr>
+				            <td>ID</td>
+				            <td>消费组</td>
+				            <td>消费者</td>
+				            <td>更新时间</td>
+			          	</tr>
+			        </thead>
+			        <tbody>
+			        #foreach($consumerGroups in $page.getList())
+			        <tr>
+			            <td>$!consumerGroups.id</td>
+			            <td>$!consumerGroups.consumerGroup</td>
+			            <td>$!consumerGroups.consumerLive</td>
+			            <td>$DateUtil.formatForDateTime($!consumerGroups.updateTime)</td>
+			        </tr>
+			        #end
+			        </tbody>
+				</table>
+			</p>
+				<p>
+					#page($page)
+				</p>
+		</consumergroupsset>
+ 	</form>
+</div>
+#parse("shared/footer.vm")

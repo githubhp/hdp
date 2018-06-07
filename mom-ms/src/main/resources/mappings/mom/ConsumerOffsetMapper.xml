@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.br.mom.ms.dao.ConsumerOffsetMapper">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+	<resultMap id="BaseResultMap" type="com.br.mom.ms.model.ConsumerOffset">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="consumer_id" property="consumerId" jdbcType="INTEGER" />
+		<result column="offset" property="offset" jdbcType="INTEGER" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, consumer_id, offset, update_time, create_time
+	</sql>
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id"
+		parameterType="com.br.mom.ms.model.ConsumerOffset">
+		insert into consumer_offset (consumer_id,
+		offset,update_time, create_time)
+		values (
+		#{consumerId,jdbcType=INTEGER},
+		#{offset,jdbcType=BIGINT},
+		#{updateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP})
+	</insert>
+	<insert id="insertSelective" useGeneratedKeys="true"
+		keyProperty="id" parameterType="com.br.mom.ms.model.ConsumerOffset">
+		insert into consumer_offset
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="consumerId != null">
+				consumer_id,
+			</if>
+			<if test="offset != null">
+				offset,
+			</if>
+			<if test="updateTime != null">
+				update_time,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="consumerId != null">
+				#{consumerId,jdbcType=INTEGER},
+			</if>
+			<if test="offset != null">
+				#{offset,jdbcType=BIGINT},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		consumer_offset
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<update id="updateByUpdateTime" parameterType="com.br.mom.ms.model.ConsumerOffset">
+		update
+		consumer_offset
+		set
+		offset =
+		#{offset,jdbcType=BIGINT},
+		where
+		update_time =
+		#{updateTime,jdbcType=TIMESTAMP}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.br.mom.ms.model.ConsumerOffset">
+		update
+		consumer_offset
+		set consumer_id = #{consumerId,jdbcType=INTEGER},
+		offset =
+		#{offset,jdbcType=BIGINT},
+		update_time =
+		#{updateTime,jdbcType=TIMESTAMP},
+		create_time =
+		#{createTime,jdbcType=TIMESTAMP}
+		where
+		id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKeySelective" parameterType="com.br.mom.ms.model.ConsumerOffset">
+		update consumer_offset
+		<set>
+			<if test="consumerId != null">
+				consumer_id = #{consumerId,jdbcType=INTEGER},
+			</if>
+			<if test="offset != null">
+				offset = #{offset,jdbcType=INTEGER},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<select id="selectByConsumerId" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from consumer_offset
+		where consumer_id = #{consumerId,jdbcType=INTEGER}
+		order by create_time
+	</select>
+	<select id="selectByConsumerIdAndTime" resultMap="BaseResultMap"
+		parameterType="com.br.mom.ms.model.ConsumerOffset">
+		select
+		<include refid="Base_Column_List" />
+		from consumer_offset
+		where 1=1
+		<if test="consumerId != null">
+			and consumer_id = #{consumerId,jdbcType=INTEGER}
+		</if>
+		<if test="createTime != null">
+			and create_time &lt;=#{updateTime,jdbcType=TIMESTAMP}"%"
+		</if>
+		<if test="createTime != null">
+			and create_time &gt;=#{createTime,jdbcType=TIMESTAMP}"%"
+		</if>
+		order by create_time
+	</select>
+	<select id="selectSelective" resultMap="BaseResultMap"
+		parameterType="com.br.mom.ms.model.ConsumerOffset">
+		select
+		<include refid="Base_Column_List" />
+		from consumer_offset
+		where 1=1
+		<if test="id != null">
+			and id = #{id,jdbcType=INTEGER}
+		</if>
+		<if test="consumerId != null">
+			and consumer_id = #{consumerId,jdbcType=INTEGER}
+		</if>
+		<if test="offset != null">
+			and offset = #{offset,jdbcType=INTEGER}
+		</if>
+		<if test="updateTime != null">
+			and update_time = #{updateTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="createTime != null">
+			and create_time = #{createTime,jdbcType=TIMESTAMP}
+		</if>
+	</select>
+	<select id="selectAllSelective" resultMap="BaseResultMap"
+		parameterType="com.br.mom.ms.model.ConsumerOffset">
+		select
+		<include refid="Base_Column_List" />
+		from consumer_offset
+		where 1=1
+		<if test="id != null">
+			and id = #{id,jdbcType=INTEGER}
+		</if>
+		<if test="consumerId != null">
+			and consumer_id = #{consumerId,jdbcType=INTEGER}
+		</if>
+		<if test="offset != null">
+			and offset = #{offset,jdbcType=INTEGER}
+		</if>
+		<if test="updateTime != null">
+			and update_time = #{updateTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="createTime != null">
+			and create_time = #{createTime,jdbcType=TIMESTAMP}
+		</if>
+	</select>
+</mapper>

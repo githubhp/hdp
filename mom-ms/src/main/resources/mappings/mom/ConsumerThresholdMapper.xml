@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.br.mom.ms.dao.ConsumerThresholdMapper">
+	<resultMap id="BaseResultMap" type="com.br.mom.ms.model.ConsumerThreshold">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="group_name" property="groupName" jdbcType="VARCHAR" />
+		<result column="queue_name" property="queueName" jdbcType="VARCHAR" />
+		<result column="port" property="port" jdbcType="VARCHAR" />
+		<result column="consumer_number" property="consumerNumber"
+			jdbcType="VARCHAR" />
+		<result column="consumer_live" property="consumerLive"
+			jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="VARCHAR" />
+		<result column="threshold" property="threshold" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, group_name, queue_name, port, consumer_number,
+		consumer_live, status,
+		threshold,
+		create_time, update_time
+	</sql>
+	<select id="selectAllSelective" resultMap="BaseResultMap"
+		parameterType="com.br.mom.ms.model.ConsumerThreshold">
+		select
+		<include refid="Base_Column_List" />
+		from consumer_threshold
+		where 1=1
+		<if test="id != null">
+			and id = #{id,jdbcType=INTEGER}
+		</if>
+		<if test="groupName != null">
+			and group_name = #{groupName,jdbcType=VARCHAR}
+		</if>
+		<if test="queueName != null">
+			and queue_name = #{queueName,jdbcType=VARCHAR}
+		</if>
+		<if test="port != null">
+			and port = #{port,jdbcType=VARCHAR}
+		</if>
+		<if test="consumerNumber != null">
+			and consumer_number = #{consumerNumber,jdbcType=VARCHAR}
+		</if>
+		<if test="consumerLive != null">
+			and consumer_live = #{consumerLive,jdbcType=VARCHAR}
+		</if>
+		<if test="status != null">
+			and status = #{status,jdbcType=VARCHAR}
+		</if>
+		<if test="threshold != null">
+			and threshold = #{threshold,jdbcType=VARCHAR}
+		</if>
+		<if test="createTime != null">
+			and create_time = #{createTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="updateTime != null">
+			and update_time = #{updateTime,jdbcType=TIMESTAMP}
+		</if>
+	</select>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from consumer_threshold
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<select id="selectByPage" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from consumer_threshold order by id ASC limit #{startIndex},#{pageSize}
+	</select>
+	<select id="selectTotalRecords" resultType="java.lang.Integer">
+		select count(*) from
+		consumer_threshold
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		consumer_threshold
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insertSelective" parameterType="com.br.mom.ms.model.ConsumerThreshold"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into consumer_threshold
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="groupName != null">
+				group_name,
+			</if>
+			<if test="queueName != null">
+				queue_name,
+			</if>
+			<if test="port != null">
+				port,
+			</if>
+			<if test="consumerNumber != null">
+				consumer_number,
+			</if>
+			<if test="consumerLive != null">
+				consumer_live,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="threshold != null">
+				threshold,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="updateTime != null">
+				update_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="groupName != null">
+				#{groupName,jdbcType=VARCHAR},
+			</if>
+			<if test="queueName != null">
+				#{queueName,jdbcType=VARCHAR},
+			</if>
+			<if test="port != null">
+				#{port,jdbcType=VARCHAR},
+			</if>
+			<if test="consumerNumber != null">
+				#{consumerNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="consumerLive != null">
+				#{consumerLive,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=VARCHAR},
+			</if>
+			<if test="threshold != null">
+				#{threshold,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.br.mom.ms.model.ConsumerThreshold">
+		update consumer_threshold
+		<set>
+			<if test="groupName != null">
+				group_name = #{groupName,jdbcType=VARCHAR},
+			</if>
+			<if test="queueName != null">
+				queue_name = #{queueName,jdbcType=VARCHAR},
+			</if>
+			<if test="port != null">
+				port = #{port,jdbcType=VARCHAR},
+			</if>
+			<if test="consumerNumber != null">
+				consumer_number = #{consumerNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="consumerLive != null">
+				consumer_live = #{consumerLive,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=VARCHAR},
+			</if>
+			<if test="threshold != null">
+				threshold = #{threshold,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+</mapper>

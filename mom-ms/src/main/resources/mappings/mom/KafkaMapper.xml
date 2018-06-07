@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.br.mom.ms.dao.KafkaMapper" >
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" /> -->
+    <resultMap id="BaseResultMap" type="com.br.mom.ms.model.Kafka" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="ip" property="ip" jdbcType="VARCHAR" />
+        <result column="port" property="port" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+        id, ip, port, create_time
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select 
+        <include refid="Base_Column_List" />
+        from kafka
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="selectSelective" resultMap="BaseResultMap" parameterType="com.br.mom.ms.model.Kafka" >
+        select 
+        <include refid="Base_Column_List" />
+        from kafka
+        where 1=1
+        <if test="id != null" >
+            and id = #{id,jdbcType=INTEGER}
+        </if>
+        <if test="ip != null" >
+            and ip = #{ip,jdbcType=VARCHAR}
+        </if>
+        <if test="port != null" >
+            and port = #{port,jdbcType=VARCHAR}
+        </if>
+        <if test="createTime != null" >
+            and create_time = #{createTime,jdbcType=TIMESTAMP}
+        </if>
+    </select>
+    <select id="selectAllSelective" resultMap="BaseResultMap" parameterType="com.br.mom.ms.model.Kafka" >
+        select 
+        <include refid="Base_Column_List" />
+        from kafka
+        where 1=1
+        <if test="id != null" >
+            and id = #{id,jdbcType=INTEGER}
+        </if>
+        <if test="ip != null" >
+            and ip = #{ip,jdbcType=VARCHAR}
+        </if>
+        <if test="port != null" >
+            and port = #{port,jdbcType=VARCHAR}
+        </if>
+        <if test="createTime != null" >
+            and create_time = #{createTime,jdbcType=TIMESTAMP}
+        </if>
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+        delete from kafka
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.br.mom.ms.model.Kafka" >
+        insert into kafka (id, ip, port, 
+        create_time)
+        values (#{id,jdbcType=INTEGER}, #{ip,jdbcType=VARCHAR}, #{port,jdbcType=VARCHAR}, 
+        #{createTime,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" parameterType="com.br.mom.ms.model.Kafka" >
+        insert into kafka
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="ip != null" >
+                ip,
+            </if>
+            <if test="port != null" >
+                port,
+            </if>
+            <if test="createTime != null" >
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="ip != null" >
+                #{ip,jdbcType=VARCHAR},
+            </if>
+            <if test="port != null" >
+                #{port,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null" >
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.br.mom.ms.model.Kafka" >
+        update kafka
+        <set >
+            <if test="ip != null" >
+                ip = #{ip,jdbcType=VARCHAR},
+            </if>
+            <if test="port != null" >
+                port = #{port,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null" >
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.br.mom.ms.model.Kafka" >
+        update kafka
+        set ip = #{ip,jdbcType=VARCHAR},
+        port = #{port,jdbcType=VARCHAR},
+        create_time = #{createTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+</mapper>

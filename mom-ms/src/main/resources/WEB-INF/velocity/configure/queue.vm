@@ -1,0 +1,86 @@
+#set($tab_bar="list")
+#parse("shared/header.vm")
+#parse("shared/top_menu.vm")
+#parse("configure/queue_tab_bar.vm")
+#parse("pageCount.vm")
+<div class="row-fluid">
+  <form class="form form-horizontal" method="POST" action="/configure/queue">
+    <queueset>
+      <legend>队列列表</legend>
+      <table id="queue_table" class="table table-bordered">
+        <thead>
+          <tr>
+            <td></td>
+            <td>ID</td>
+            <td>名字</td>
+            <td>内容格式</td>
+            <td>中间件</td>
+            <td>调试</td>
+            <td>创建时间</td>
+            <td></td>
+            <td></td>
+          </tr>
+        </thead>
+        <tbody>
+        #foreach($queue in $page.getList())
+        <tr>
+            <td><input  name="selected_ids[]" value="$!queue.id" type="checkbox" /><input name="ids[]" value="$!queue.id" type="hidden" /></td>
+            <td>$!queue.id</td>
+            <td><input class="input-xlarge"  name="$!queue.id:name" value="$!queue.name" type="text" /></td>
+            <td>
+                <select class="input-small" name="$!queue.id:contentFormat">
+                    #foreach($contentFormat in $contentFormats)
+                    <option #if ($contentFormat.getV() == $!queue.contentFormat) selected="selected" #end value="$contentFormat.getV()">$contentFormat.getName()</option>
+                    #end
+                </select>
+            </td>
+            <td>
+                <select class="input-small" name="$!queue.id:momType">
+                    #foreach($momType in $momTypes)
+                    <option #if ($momType.getV() == $!queue.momType) selected="selected" #end value="$momType.getV()">$momType.getName()</option>
+                    #end
+                </select>
+            </td>
+            <td>
+                <select class="input-mini" name="$!queue.id:status">
+                    #foreach($resultStatus in $resultStatuss)
+                    <option #if ($resultStatus.getNo() == $!queue.status) selected="selected" #end value="$resultStatus.getNo()">$resultStatus.getName()</option>
+                    #end
+                </select>
+            </td>
+            <td>$DateUtil.formatForDate($!queue.createTime)</td>
+            <td>
+	            <button class="btn btn-primary" name="action" value="singlesave">保存</button>
+            </td>
+            <td>
+	            <button class="btn btn-danger" name="action" value="singledelete">删除</button>
+        	</td>
+        </tr>
+        #end
+          <tr>
+            <td colspan="7">
+              <button id="btn-new-queue" class="btn btn-success"><i class="icon-plus"></i> 添加页面</button>
+            </td>
+          </tr> 
+        </tbody>
+      </table>
+      <p>
+        <button id="btn-save-queue" class="btn btn-primary" name="action" value="save"><i class="icon-ok"></i> 保存选中的字段</button>&nbsp;
+        <button id="btn-delete-selected-queue" class="btn btn-danger" name="action" value="delete"><i class="icon-remove"></i> 删除选中的字段</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      	<button class="btn btn-warning" name="action" value="push">推送到配置中心</button>
+      </p>
+      <p>
+		#page($page)
+	  </p>
+    </queueset>
+  </form>
+</div>
+<script language="javascript">
+    $(document).ready(function() {
+        $('#btn-new-queue').click(function(e){
+            e.preventDefault();
+            $('#queue_table tr:last').before('<tr><td></td><td></td><td><input class="input-mini" name="new:name[]" type="text" /></td><td><select name="new:contentFormat[]">#foreach($contentFormat in $contentFormats)<option value="$contentFormat.getV()">$contentFormat.getName()</option>#end</select></td><td><select name="new:momType[]">#foreach($momType in $momTypes)<option value="$momType.getV()">$momType.getName()</option>#end</select></td><td><select class="input-mini" name="new:status[]">#foreach($resultStatus in $resultStatuss)<option value="$resultStatus.getNo()">$resultStatus.getName()</option>#end</select></td><td></td></tr>');
+        });
+    });
+</script>
+#parse("shared/footer.vm")

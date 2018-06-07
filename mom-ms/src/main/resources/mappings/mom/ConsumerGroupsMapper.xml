@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.br.mom.ms.dao.ConsumerGroupsMapper">
+	<resultMap id="BaseResultMap" type="com.br.mom.ms.model.ConsumerGroups">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="consumer_group" property="consumerGroup"
+			jdbcType="VARCHAR" />
+		<result column="consumer_live" property="consumerLive"
+			jdbcType="VARCHAR" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		id, consumer_group, consumer_live, update_time
+	</sql>
+
+	<select id="selectByPage" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from
+		consumer_groups
+		order by id ASC
+		limit #{startIndex},#{pageSize}
+	</select>
+
+	<select id="selectTotalRecords" resultType="java.lang.Integer">
+		select
+		count(*)
+		from
+		consumer_groups
+	</select>
+
+	<select id="selectAllSelective" resultMap="BaseResultMap"
+		parameterType="com.br.mom.ms.model.ConsumerGroups">
+		select
+		<include refid="Base_Column_List" />
+		from consumer_groups
+		where 1=1
+		<if test="id != null">
+			and id = #{id,jdbcType=INTEGER}
+		</if>
+		<if test="consumerGroup != null">
+			and consumer_group = #{consumerGroup,jdbcType=VARCHAR}
+		</if>
+		<if test="consumerLive != null">
+			and consumer_live = #{consumerLive,jdbcType=VARCHAR}
+		</if>
+		<if test="updateTime != null">
+			and update_time = #{updateTime,jdbcType=TIMESTAMP}
+		</if>
+	</select>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from consumer_groups
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		consumer_groups
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+
+	<insert id="insertSelective" parameterType="com.br.mom.ms.model.ConsumerGroups"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into consumer_groups
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="consumerGroup != null">
+				consumer_group,
+			</if>
+			<if test="consumerLive != null">
+				consumer_live,
+			</if>
+			<if test="updateTime != null">
+				update_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="consumerGroup != null">
+				#{consumerGroup,jdbcType=VARCHAR},
+			</if>
+			<if test="consumerLive != null">
+				#{consumerLive,jdbcType=VARCHAR},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	
+	<update id="updateByPrimaryKeySelective" parameterType="com.br.mom.ms.model.ConsumerGroups">
+		update consumer_groups
+		<set>
+			<if test="consumerGroup != null">
+				consumer_group = #{consumerGroup,jdbcType=VARCHAR},
+			</if>
+			<if test="consumerLive != null">
+				consumer_live = #{consumerLive,jdbcType=VARCHAR},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+</mapper>

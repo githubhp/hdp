@@ -1,0 +1,49 @@
+#set($tab_bar="list")
+#parse("shared/header.vm")
+#parse("shared/top_menu.vm")
+#parse("monitor/consumer_status_tab_bar.vm")
+#parse("pageCount.vm")
+
+<div class="row-fluid">
+<form class="form form-horizontal" method="POST" action="/monitor/consumer_status">
+<consumerstatusset>
+<table id="consumer_table" class="table table-bordered">
+        <thead>
+          <tr>
+            <td>ID</td>
+            <td>消费者名字</td>
+            <td>队列</td>
+            <td>中间件</td>
+            <td>持久化</td>
+            <td>出队数</td>
+            <td>更新时间</td>
+            <td>创建时间</td>
+          </tr>
+        </thead>
+        <tbody>
+        #foreach($consumerStatus in $page.getList())
+        <tr>
+            <td>$!idAndConsumer.get($!consumerStatus.consumerId).getId()</td>
+            <td>$!idAndConsumer.get($!consumerStatus.consumerId).getName()</td>
+            <td>$!idAndQueue.get($!idAndConsumer.get($!consumerStatus.consumerId).getQueueId()).getName()</td>
+            <td>$!MOMType.fromInt($!idAndConsumer.get($!consumerStatus.consumerId).getMomType()).getName()</td>
+            <td>$!PersistentType.fromInt($!idAndConsumer.get($!consumerStatus.consumerId).getPersistentType()).getName()</td>
+            <td>$!consumerStatus.dequeue</td>
+           	<td>
+	            #if("$!consumerStatus.updateTime" == "")$!consumerStatus.updateTime
+	            #else $DateUtil.formatForDateTime($!consumerStatus.updateTime)
+	            #end
+            </td>
+            <td>$DateUtil.formatForDateTime($!consumerStatus.createTime)</td>
+        </tr>
+        #end
+        </tbody>
+</table>
+	<p> 
+		#page($page)
+	</p>
+	</consumerstatusset>
+</form>
+</div>
+
+#parse("shared/footer.vm")

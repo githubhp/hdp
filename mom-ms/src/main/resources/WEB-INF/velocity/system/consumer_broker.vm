@@ -1,0 +1,54 @@
+#set($tab_bar="list")
+#parse("shared/header.vm")
+#parse("shared/top_menu.vm")
+#parse("system/consumer_broker_tab_bar.vm")
+<div class="row-fluid">
+  <form class="form form-horizontal" method="POST" action="/system/consumer_broker">
+    <consumerBrokerset>
+      <legend>Consumer Broker集群</legend>
+      <table id="consumerBroker_table" class="table table-bordered">
+        <thead>
+          <tr>
+            <td></td>
+            <td>ID</td>
+            <td>IP</td>
+            <td>端口</td>
+            <td>状态</td>
+            <td>创建时间</td>
+          </tr>
+        </thead>
+        <tbody>
+        #foreach($consumerBroker in $consumerBrokers)
+        <tr>
+            <td><input  name="selected_ids[]" value="$!consumerBroker.id" type="checkbox" /><input name="ids[]" value="$!consumerBroker.id" type="hidden" /></td>
+            <td>$!consumerBroker.id</td>
+            <td><input name="$!consumerBroker.id:ip" value="$!consumerBroker.ip" type="text" /></td>
+            <td><input name="$!consumerBroker.id:port" value="$!consumerBroker.port" type="text" /></td>
+            <td>#if($!consumerBroker.status==1)<span class="label label-success">运行</span>#else<span class="label label-important">挂了</span>#end</td>
+            <td>$DateUtil.formatForDate($!consumerBroker.createTime)</td>
+        </tr>
+        #end
+          <tr>
+            <td colspan="5">
+              <button id="btn-new-consumerBroker" class="btn btn-success"><i class="icon-plus"></i> 添加页面</button>
+            </td>
+          </tr> 
+        </tbody>
+      </table>
+      <p>
+        <button id="btn-save-consumerBroker" class="btn btn-primary" name="action" value="save"><i class="icon-ok"></i> 保存字段列表</button>&nbsp;
+        <button id="btn-delete-selected-consumerBroker" class="btn btn-danger" name="action" value="delete"><i class="icon-remove"></i> 删除选中的列表</button>
+        <button id="btn-refresh-selected-consumerBroker" class="btn btn-warning" name="action" value="refresh"><i class="icon-refresh"></i> 刷新选中的列表</button>
+      </p>
+    </consumerBrokerset>
+  </form>
+</div>
+<script language="javascript">
+    $(document).ready(function() {
+        $('#btn-new-consumerBroker').click(function(e){
+            e.preventDefault();
+            $('#consumerBroker_table tr:last').before('<tr><td></td><td></td><td><input name="new:ip[]" type="text" /></td><td><input name="new:port[]" type="text" /></td><td></td></tr>');
+        });
+    });
+</script>
+#parse("shared/footer.vm")

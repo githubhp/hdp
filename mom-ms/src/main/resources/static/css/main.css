@@ -1,0 +1,88 @@
+.navbar {
+	background-color: #EBF6FF;
+}
+/*左侧菜单*/
+.sidebar-menu {
+	border-right: 1px solid #c4c8cb;
+	width: 100%;
+	padding-right: 20px;
+	padding-left: 35px;
+}
+
+/*一级菜单*/
+.menu-first {
+	background-color: #e9e9e9;
+	text-align: center;
+	border-top: 1px solid #efefef;
+	border-bottom: 1px solid #e1e1e1;
+	padding: 0;
+}
+/*一级菜单鼠标划过状态*/
+.menu-first:hover {
+	text-decoration: none;
+	background-color: #d6d4d5;
+	border-top: 1px solid #b7b7b7;
+	border-bottom: 1px solid #acacac;
+}
+/*二级菜单*/
+.menu-second li {
+	text-align: center;
+	border-top: 1px solid #efefef;
+	border-bottom: 1px solid #efefef;
+}
+/*二级菜单鼠标划过样式*/
+.menu-second li:hover {
+	text-decoration: none;
+	background-color: #66c3ec;
+	border-top: 1px solid #83ceed;
+	border-bottom: 1px solid #83ceed;
+	border-right: 3px solid #66c3ec border-left: 3px solid #66c3ec;
+}
+
+.footer {
+	text-align: center;
+}
+
+.vertical-center {
+	position: absolute;
+	padding-top: 10%;
+	padding-right: 10%;
+	transform: translate;
+}
+
+.userheader {
+	float: left;
+	height: 30px;
+	padding: 15px 15px;
+	font-size: 14px;
+	line-height: 18px;
+}
+
+.ui-icon.ui-igtreegrid-expansion-indicator.ui-icon-minus {
+	background:
+		url(http://www.igniteui.com/images/samples/tree-grid/opened_folder.png)
+		!important;
+	background-repeat: no-repeat;
+}
+
+.ui-icon.ui-igtreegrid-expansion-indicator.ui-icon-plus {
+	background:
+		url(http://www.igniteui.com/images/samples/tree-grid/folder.png)
+		!important;
+	background-repeat: no-repeat;
+}
+
+.ui-icon-plus:before {
+	content: '' !important;
+}
+
+.ui-widget-header {
+	background: #97BEE7;
+	border-bottom: 1px solid #777;
+	color: #fff;
+	font-weight: normal;
+}
+
+.ui-icon-minus:before {
+	content: '' !important;
+}

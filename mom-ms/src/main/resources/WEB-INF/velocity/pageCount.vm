@@ -1,0 +1,82 @@
+#macro(page $pageBean)
+  ##设置按钮颜色
+  #set($linkStyle="style=cursor:pointer;color:blue;text-decoration:none;")
+  ##设置点击事件
+  #set($changePage="document.getElementById('_changePage').click();")
+  
+  ##设置数据
+  #set($pageSize=$pageBean.getPageSize())
+  #set($pageNumber=$pageBean.getPageNow())
+  #set($pageSum = $pageBean.getTotalPages())
+  #set($dataSum=$pageBean.getTotalRecords())
+  
+  #set($disabledPreviousPage=$pageBean.disabledPreviousPage())
+  #set($disabledFirstPage=$pageBean.disabledFirstPage())
+  #set($disabledNextPage=$pageBean.disabledNextPage())
+  #set($disabledLastPage=$pageBean.disabledLastPage())
+  #set($disabledTurnTo=$pageBean.disabledTurnTo())
+  
+  ##当出现0数据或者pageBean是null时 显示无数据
+  #if($dataSum == 0 || !$pageBean)
+    <center style="text-color:#777777">无数据</center>
+  #else
+    ##提交动作
+    <input type="submit" style="display:none"  id="_changePage" autocomplete="off" >
+            
+    ##判断是否是首页
+    #if($disabledFirstPage)
+      <span class="pagePre">首页</span>
+    #else
+      <a href="javascript:void(0)"  class="pagePre" onclick="document.getElementById('pageNumber').value='1';$changePage">首页</a>
+    #end
+        &nbsp;&nbsp;
+    ##判断是否有上一页
+    #if($disabledPreviousPage)
+        <span>上一页</span>
+    #else
+        <a href="javascript:void(0)" onclick="document.getElementById('pageNumber').value=$pageBean.getLastpage(); $changePage">上一页</a>
+    #end
+    &nbsp;&nbsp;&nbsp;&nbsp; 转到&nbsp;
+	#if(!$disabledTurnTo)
+		<input type="hidden" id="pageNumber" name="pageNumber" value=$pageNumber />
+		#set($selectOnChange="document.getElementById('pageNumber').value=this.value;$changePage")
+		<select  onchange=$selectOnChange style="width:60px;">
+		    #set($nums = [1..$pageSum])
+		    #foreach($ps in $nums)
+		      <option value=$ps #if($ps == $pageNumber) selected='selected' #end >
+		        $ps
+		      </option>
+		    #end
+		</select>&nbsp;页
+	#else
+		<input type="text" size="1" readonly id="pageNumber" name="pageNumber" value=$pageNumber />
+	#end
+	&nbsp;&nbsp;&nbsp;&nbsp;
+    ##判断是否有下一页
+    #if($disabledNextPage)
+        <span>下一页</span>
+    #else
+        <a href="javascript:void(0)"  onclick="document.getElementById('pageNumber').value = $pageBean.getNextPage();  $changePage" >下一页</a>
+    #end
+        &nbsp;&nbsp;
+    ##判断是否为尾页
+    #if($disabledLastPage)
+        <span class="pagePre">尾页</span>
+    #else
+        <a href="javascript:void(0)"  class="pagePre" onclick="document.getElementById('pageNumber').value=$pageSum; $changePage" >尾页</a>
+    #end
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    ##添加事件,每页显示多少页
+           每页&nbsp;<select name="customPageSize" onchange="$changePage" style="width:60px;">
+    
+    #set($arr=[10,20,30,40,50,60,70,80,90,100])
+    #foreach($foo in $arr)
+        <option value=$foo #if($foo == $pageSize) selected='selected' #end>
+            $foo
+        </option>
+    #end
+    </select>&nbsp;条
+    
+	   &nbsp;&nbsp;&nbsp;&nbsp;共 $dataSum条记录，&nbsp;共  $pageSum 页 
+    #end
+    #end

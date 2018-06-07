@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: mom-boot
+  http:
+    encoding: { charset: UTF-8, enable: true, force: true }
+#产品信息设置
+productName: mom-平台
+#产品版本
+version: mom-1.0
+#静态文件后缀
+web:
+  staticFile: .css,.js,.png,.jpg,.gif,.jpeg,.bmp,.ico,.swf,.psd,.htc,.htm,.html,.crx,.xpi,.exe,.ipa,.apk

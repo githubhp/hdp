@@ -1,0 +1,51 @@
+#set($tab_bar="list")
+#parse("shared/header.vm")
+#parse("shared/top_menu.vm")
+#parse("system/kafka_tab_bar.vm")
+<div class="row-fluid">
+  <form class="form form-horizontal" method="POST" action="/system/kafka">
+    <kafkaset>
+      <legend>kafka集群</legend>
+      <table id="kafka_table" class="table table-bordered">
+        <thead>
+          <tr>
+            <td></td>
+            <td>ID</td>
+            <td>IP</td>
+            <td>端口</td>
+            <td>创建时间</td>
+          </tr>
+        </thead>
+        <tbody>
+        #foreach($kafka in $kafkas)
+        <tr>
+            <td><input  name="selected_ids[]" value="$!kafka.id" type="checkbox" /><input name="ids[]" value="$!kafka.id" type="hidden" /></td>
+            <td>$!kafka.id</td>
+            <td><input name="$!kafka.id:ip" value="$!kafka.ip" type="text" /></td>
+            <td><input name="$!kafka.id:port" value="$!kafka.port" type="text" /></td>
+            <td>$DateUtil.formatForDate($!kafka.createTime)</td>
+        </tr>
+        #end
+          <tr>
+            <td colspan="5">
+              <button id="btn-new-kafka" class="btn btn-success"><i class="icon-plus"></i> 添加页面</button>
+            </td>
+          </tr> 
+        </tbody>
+      </table>
+      <p>
+        <button id="btn-save-kafka" class="btn btn-primary" name="action" value="save"><i class="icon-ok"></i> 保存字段列表</button>&nbsp;
+        <button id="btn-delete-selected-kafka" class="btn btn-danger" name="action" value="delete"><i class="icon-remove"></i> 删除选中的字段</button>
+      </p>
+    </kafkaset>
+  </form>
+</div>
+<script language="javascript">
+    $(document).ready(function() {
+        $('#btn-new-kafka').click(function(e){
+            e.preventDefault();
+            $('#kafka_table tr:last').before('<tr><td></td><td></td><td><input name="new:ip[]" type="text" /></td><td><input name="new:port[]" type="text" /></td><td></td></tr>');
+        });
+    });
+</script>
+#parse("shared/footer.vm")

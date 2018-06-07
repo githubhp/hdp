@@ -1,0 +1,72 @@
+#set($tab_bar="list")
+#parse("shared/header.vm")
+#parse("shared/top_menu.vm")
+#parse("monitor/consumer_threshold_tab_bar.vm")
+#parse("pageCount.vm")
+
+<div class="row-fluid">
+<form class="form form-horizontal" method="POST" action="/monitor/consumer_threshold">
+<consumerthresholdset>
+<!-- <legend>消费组列表</legend> -->
+<table id="consumer_table" class="table table-bordered">
+        <thead>
+          <tr>
+            <td></td>
+            <td>ID</td>
+            <td>消费组</td>
+            <td>主题</td>
+            <td>端口</td>
+            <td>消费者_normal</td>
+            <td>消费者_abnormal</td>
+            <td>状态</td>
+            <td>阀值</td>
+            <td>更新时间</td>
+            <td>创建时间</td>
+          </tr>
+        </thead>
+        <tbody>
+        #foreach($consumerThreshold in $page.getList())
+        <tr>
+        	<td><input  name="selected_ids[]" value="$!consumerThreshold.id" type="checkbox" /><input name="ids[]" value="$!consumerThreshold.id" type="hidden" /></td>
+            <td>$!consumerThreshold.id</td>
+            <td>$!consumerThreshold.groupName</td>
+            <td>$!consumerThreshold.queueName</td>
+            <td>$!consumerThreshold.port</td>
+            <td>$!consumerThreshold.consumerNumber</td>
+            <td>$!consumerThreshold.consumerLive</td>
+            <td>#if($!consumerThreshold.status=="1")
+            	<span class="label label-success">正常</span>
+            	#else<span class="label label-important">挂了</span>
+            	#end
+            </td>
+            <td>$!consumerThreshold.threshold</td>
+            <td>$DateUtil.formatForDateTime($!consumerThreshold.updateTime)</td>
+            <td>$DateUtil.formatForDateTime($!consumerThreshold.createTime)</td>
+        </tr>
+        #end
+        <tr>
+            <td colspan="10">
+              <button id="btn-new-user" class="btn btn-success"><i class="icon-plus"></i> 添加页面</button>
+            </td>
+        </tr> 
+        </tbody>
+		</table>
+		<p>
+	        <button id="btn-save-user" class="btn btn-primary" name="action" value="save"><i class="icon-ok"></i> 保存字段列表</button>&nbsp;
+	        <button id="btn-delete-selected-user" class="btn btn-danger" name="action" value="delete"><i class="icon-remove"></i> 删除选中的字段</button>
+       </p>
+	   <p>
+			#page($page)
+		</p>
+     </consumerthresholdset>
+  </form>
+</div>
+<script language="javascript">
+    $(document).ready(function() {
+        $('#btn-new-user').click(function(e){
+            e.preventDefault();
+            $('#consumer_table tr:last').before('<tr><td></td><td></td><td><input class="input-mini" name="new:group[]" type="text" /></td><td><input class="input-mini" name="new:topic[]" type="text" /></td><td><input class="input-mini" name="new:port[]" type="text" /></td><td></td><td></td><td></td><td><input class="input-mini" name="new:threshold[]" type="text" /></td><td></td></tr>');
+        });
+    });
+</script>
+#parse("shared/footer.vm")

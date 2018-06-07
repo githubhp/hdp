@@ -1,0 +1,47 @@
+#set($tab_bar="list")
+#parse("shared/header.vm")
+#parse("shared/top_menu.vm")
+#parse("monitor/producer_status_tab_bar.vm")
+#parse("pageCount.vm")
+
+<div class="row-fluid">
+<form class="form form-horizontal" method="POST" action="/monitor/producer_status">
+<producerstatusset>
+<table id="consumer_table" class="table table-bordered">
+        <thead>
+          <tr>
+            <td>ID</td>
+            <td>生产者名字</td>
+            <td>队列</td>
+            <td>中间件</td>
+            <td>入队数</td>
+            <td>更新时间</td>
+            <td>创建时间</td>
+          </tr>
+        </thead>
+        <tbody>
+        #foreach($producerStatus in $page.getList())
+        <tr>
+            <td>$!idAndProducer.get($!producerStatus.producerId).getId()</td>
+            <td>$!idAndProducer.get($!producerStatus.producerId).getName()</td>
+            <td>$!idAndQueue.get($!idAndProducer.get($!producerStatus.producerId).getQueueId()).getName()</td>
+            <td>$!MOMType.fromInt($!idAndProducer.get($!producerStatus.producerId).getMomType()).getName()</td>
+            <td>$!producerStatus.enqueue</td>
+            <td>
+	            #if("$!producerStatus.updateTime" == "")$!producerStatus.updateTime
+	            #else $DateUtil.formatForDateTime($!producerStatus.updateTime)
+	            #end
+            </td>
+            <td>$DateUtil.formatForDateTime($!producerStatus.createTime)</td>
+        </tr>
+        #end
+        </tbody>
+</table>
+	<p> 
+		#page($page)
+	</p>
+	</producerstatusset>
+</form>
+</div>
+
+#parse("shared/footer.vm")

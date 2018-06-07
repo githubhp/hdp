@@ -1,0 +1,154 @@
+#set($tab_bar="list")
+#parse("shared/header.vm")
+#parse("shared/top_menu.vm")
+#parse("monitor/consumer_offset_min_tab_bar.vm")
+
+<div class="row-fluid">
+<form class="form form-horizontal" method="POST" action="/monitor/consumer_offset_min">
+<div class="row-fluid">
+  <form class="form-inline well well-small" method="POST" action="/monitor/consumer_offset_min">
+    <div class="control-group">
+      <div class="controls">
+       <span>
+	       <div class="col-lg-2 col-md-2 col-sm-2" style="width:200px;margin-left: 10px;">
+			     <label class="control-label">开始时间:</label>
+			     <input size="16" type="text" readonly id="start_time" class="form_datetime form-control" name="start_time">
+		   </div>
+	       <div class="col-lg-2 col-md-2 col-sm-2" style="width:200px;margin-left: 10px;">
+			     <label class="control-label">结束时间:</label>
+			     <input size="16" type="text" readonly id="stop_time" class="form_datetime form-control" name="stop_time">
+		    </div>
+		    <br/>
+            <select name="consumer_id">
+                <option value="">
+                	请选择
+                </option>
+                #foreach($consumer in $consumers)
+                <option #if ($consumer.getId() == $!consumerId) selected="selected" #end value="$consumer.getId()">$idAndGroup.get($consumer.getId())</option>
+                #end
+            </select>
+            <button type="submit" class="btn btn-primary" name="action" value="select">查询</button>
+        </span>
+      </div>
+    </div>
+  </form>
+</div>
+
+<consumeroffsetset>
+	<div class="rcont-mould">
+		##为ECharts准备一个具备大小（宽高）的Dom
+		<div id="main" style="width: 100%; height: 500px;"></div>
+	</div>
+<table id="consumer_table" class="table table-bordered">
+        <thead>
+          <tr>
+            <td>消费端</td>
+            <td>队列</td>
+            <td>持久化</td>
+            <td>出队数</td>
+            <td>更新时间</td>
+          </tr>
+        </thead>
+        <tbody>
+        #foreach($consumerOffset in $consumerOffsets)
+        <tr>
+            <td>$!idAndConsumer.get($!consumerOffset.consumerId).getName()</td>
+            <td>$!idAndQueue.get($!idAndConsumer.get($!consumerOffset.consumerId).getQueueId()).getName()</td>
+            <td>$!PersistentType.fromInt($!idAndConsumer.get($!consumerOffset.consumerId).getPersistentType()).getName()</td>
+            <td>$!consumerOffset.dequeue</td>
+            <td>$!DateUtil.formatForDateTime($!consumerOffset.updateTime)</td>
+        </tr>
+        #end
+        </tbody>
+</table>
+</consumeroffsetset>
+</form>
+</div>
+	<script type="text/javascript">
+	##基于准备好的dom，初始化echarts图表
+	var myChart = echarts.init(document.getElementById("main"));
+	option = {
+		title : {
+			text : '出队数监测',
+		},
+		tooltip : {
+			trigger : 'axis'
+		},
+		legend : {
+			data : [ '5min出队数' ]
+		},
+		toolbox : {
+			show : true,
+			feature : {
+				dataZoom : {
+					yAxisIndex : 'none'
+				},
+				dataView : {
+					readOnly : false
+				},
+				magicType : {
+					type : [ 'line', 'bar' ]
+				},
+				restore : {},
+				saveAsImage : {}
+			}
+		},
+		xAxis : {
+			type : 'category',
+			data : []
+		},
+		yAxis : {
+			 type:"value",
+			 min: 'dataMin'
+		},
+		series : [{
+			name : '出队数',
+			type : 'line',
+			data : []
+		}]
+	};
+	var Dates = []; 
+	var Dequeues = [];
+	$.ajax({
+		type : "post",
+		async : true,
+		url : "/monitor/consumer_offset_min/data",
+		dataType : "text",
+		success : function(result) {
+			if (result) {
+				var obj = eval('(' + result + ')');
+				for(var i in obj){
+					 Dates.push(obj[i].Date);
+					 Dequeues.push(obj[i].dequeue);
+				}
+				myChart.setOption({
+					xAxis : {
+						data : Dates
+					},
+					series : [{
+						data : Dequeues
+					}]
+				});
+			}
+
+		},
+		error : function(errorMsg) {
+			##请求失败时执行该函数
+			alert("请求数据失败!");
+			myChart.hideLoading();
+		}
+	});
+	myChart.setOption(option);
+</script>
+<script type="text/javascript">
+	  $(document).ready(function () {
+	  $(".form_datetime").datetimepicker({
+        	format: 'yyyy-mm-dd hh:ii',
+        	language:  'zh-CN',
+            autoclose: 0,
+            todayBtn:  1,
+        });
+        initializeDateHi();
+	  });
+</script>
+#parse("shared/footer.vm")
